@@ -15,11 +15,25 @@
     "commands": [
       {
         "command": "verbalist.captureAudio",
-        "title": "Audio Capture"
+        "title": "Start Audio Recording"
       },
       {
         "command": "verbalist.stopAudio",
-        "title": "Audio Stop"
+        "title": "Stop Audio Recording"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "verbalist.captureAudio",
+        "key": "ctrl+alt+r",
+        "mac": "cmd+alt+r",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "verbalist.stopAudio",
+        "key": "ctrl+alt+s",
+        "mac": "cmd+alt+s",
+        "when": "editorTextFocus"
       }
     ]
   },
