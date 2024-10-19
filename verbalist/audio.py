@@ -1,3 +1,5 @@
+import sys
+import time
 import sounddevice as sd
 import numpy as np
 import wave
@@ -21,9 +23,15 @@ class AudioRecorder:
         if not self.is_recording:
             print("Recording started...")
             self.frames = []  # 清空之前的录音数据
+            print("Recording started 2...")
             self.is_recording = True
+            print("Recording started 3...")
             self.stream = sd.InputStream(samplerate=self.samplerate, channels=self.channels, callback=self._callback)
+            print("Recording started ##4...")
             self.stream.start()  # 开始录音
+            print("Recording started ##5...")
+            time.sleep(5)
+            self.stream.stop()
 
     def stop_recording(self):
         if self.is_recording:
@@ -47,5 +55,32 @@ class AudioRecorder:
 
         print(f"Recording saved to {self.output_filename}")
 
-# recorder = AudioRecorder(output_filename="my_audio.wav")
+recorder = AudioRecorder(output_filename="my_audio.wav")
+
+def listen_for_commands():
+    while True:
+        # Read a line from stdin and strip any whitespace
+        print("entered loop")
+        command = sys.stdin.readline().strip()
+        print(f"Received command: {command}")
+        
+        # Respond to the "start" command
+        if command == "start":
+            if not recorder.is_recording:
+                print("Received 'start' command.")
+                recorder.start_recording()
+                continue
+            else:
+                print("Already recording.")
+        
+        # Respond to the "stop" command
+        elif command == "stop":
+            if recorder.is_recording:
+                print("Received 'stop' command.")
+                recorder.stop_recording()
+                break  # Exit the loop after stopping
+            else:
+                print("Not currently recording.")
+
 print("hello from python subprocess!")
+listen_for_commands()

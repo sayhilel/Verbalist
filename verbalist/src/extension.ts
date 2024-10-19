@@ -13,8 +13,11 @@ export function activate(context: vscode.ExtensionContext) {
       recordingProcess.stdout.on("data", (data: any) => {
         console.log(`stdout from python: ${data}`);
       });
+      recordingProcess.stderr.on("data", (data: any) => {
+        console.log(`STDERR from python: ${data}`);
+      });
       vscode.window.showInformationMessage("spawned recording process");
-      recordingProcess.stdin.write("start");
+      recordingProcess.stdin.write("start" + "\n");
       vscode.window.showInformationMessage("started recording process!");
 
       return recordingProcess;
@@ -25,7 +28,7 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand("verbalist.stopAudio", () => {
       if (recordingProcess) {
         vscode.window.showInformationMessage("stopping recording process!");
-        recordingProcess.stdin.write("stop");
+        recordingProcess.stdin.write("stop\n");
         recordingProcess.kill("SIGINT");
         recordingProcess.on("exit", () => {
           recordingProcess = null;
