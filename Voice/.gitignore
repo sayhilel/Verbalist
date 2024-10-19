@@ -1,1 +1,3 @@
-no
+__pycache__/
+*.pyc
+*.pyo

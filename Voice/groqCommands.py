@@ -6,10 +6,8 @@ from groq import Groq
 load_dotenv()
 groq_key = os.environ.get("GROQ_API_KEY")
 
-async def get_command(filename):
+def get_command(filename):
     client = Groq()
-    
-    filename = os.path.dirname(__file__) + "/Audio/output_audio.wav"
     
     with open(filename, "rb") as file:
         transcription = client.audio.transcriptions.create(
