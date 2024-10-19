@@ -47,4 +47,5 @@ class AudioRecorder:
 
         print(f"Recording saved to {self.output_filename}")
 
-recorder = AudioRecorder(output_filename="my_audio.wav")
+# recorder = AudioRecorder(output_filename="my_audio.wav")
+print("hello from python subprocess!")
