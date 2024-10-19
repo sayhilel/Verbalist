@@ -3,7 +3,8 @@ import numpy as np
 import wave
 
 class AudioRecorder:
-    def __init__(self, samplerate=44100, channels=1, output_filename="output.wav"):
+    def __init__(self, samplerate=16000, channels=1, output_filename="output.wav"):
+        # Set the samplerate=16000 since groq would down sample
         self.samplerate = samplerate
         self.channels = channels
         self.output_filename = output_filename
@@ -15,15 +16,15 @@ class AudioRecorder:
         if status:
             print(status, flush=True)
         if self.is_recording:
-            self.frames.append(indata.copy())  # 将录音帧保存
+            self.frames.append(indata.copy())  # save the audio record
 
     def start_recording(self):
         if not self.is_recording:
             print("Recording started...")
-            self.frames = []  # 清空之前的录音数据
+            self.frames = []  # clear out the previous data frames
             self.is_recording = True
             self.stream = sd.InputStream(samplerate=self.samplerate, channels=self.channels, callback=self._callback)
-            self.stream.start()  # 开始录音
+            self.stream.start()  # start recording
 
     def stop_recording(self):
         if self.is_recording:
@@ -37,11 +38,10 @@ class AudioRecorder:
     def _save_audio(self):
         # 将录制的音频保存为 WAV 文件
         audio_data = np.concatenate(self.frames, axis=0)
-        audio_data = (audio_data * 32767).astype(np.int16)  # 将 float32 数据转换为 16-bit PCM 格式
-
+        audio_data = (audio_data * 32767).astype(np.int16)  # change float32 to 16-bit PCM format
         with wave.open(self.output_filename, 'wb') as wf:
             wf.setnchannels(self.channels)
-            wf.setsampwidth(2)  # 每个样本 2 字节 (16 bits)
+            wf.setsampwidth(2)  # 2 bytes per sample (16 bits)
             wf.setframerate(self.samplerate)
             wf.writeframes(audio_data.tobytes())
 
