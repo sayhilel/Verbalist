@@ -14,7 +14,7 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.commands.registerCommand("verbalist.captureAudio", () => {
       const cmd = pythonPath;
-      const args = [filePath];
+      const args = ['-u', filePath];
       console.log("good mroning");
 
       recordingProcess = spawn(cmd, args);
@@ -36,7 +36,8 @@ export function activate(context: vscode.ExtensionContext) {
       if (recordingProcess) {
         vscode.window.showInformationMessage("stopping recording process!");
         recordingProcess.stdin.write("stop\n");
-        recordingProcess.kill("SIGINT");
+
+        //recordingProcess.kill("SIGINT");
         recordingProcess.on("exit", () => {
           recordingProcess = null;
         });

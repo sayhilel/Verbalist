@@ -1,10 +1,13 @@
-import os
+import os, sys
 from dotenv import load_dotenv
 from groq import Groq
 
 
 load_dotenv()
 groq_key = os.environ.get("GROQ_API_KEY")
+
+def eprint(*args, **kwargs):
+    print(*args, file=sys.stderr, **kwargs)
 
 def get_command(filename):
     client = Groq()
@@ -24,11 +27,11 @@ def get_command(filename):
         messages=[
             {
                 "role": "system",
-                "content": "You are an assistant that helps generate VSCODE editor actions from VSCode api from user instructions. Only reply with the editor commands."
+                "content": f"You are a translator from natural language to VScode  vscode.editor API. Only reply with  vscode.editor to achieve the required effect as stated by '{transcription.text}'"
             },
             {
                 "role": "user",
-                "content": f"Convert this speech into a VSCODE command: '{transcription.text}'"
+                "content": "```json"
             }
         ],
         model="llama3-8b-8192",
@@ -39,5 +42,5 @@ def get_command(filename):
         stream=False,
     )
     vscode_command = chat_completion.choices[0].message.content
-    print("VSCODE Command:", vscode_command)  #delete
+    print(vscode_command)  
 
