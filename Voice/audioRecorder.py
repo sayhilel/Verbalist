@@ -47,15 +47,4 @@ class AudioRecorder:
 
         print(f"Recording saved to {self.output_filename}")
 
-def recordTest():
-    recorder = AudioRecorder(output_filename="my_audio.wav")
-    recorder.start_recording()
-    print(sd.query_devices())
 
-    # 模拟其他任务，录音过程中可以执行其他代码
-    import time
-    time.sleep(5)  # 录制 5 秒
-
-    recorder.stop_recording()
-
-recordTest()
