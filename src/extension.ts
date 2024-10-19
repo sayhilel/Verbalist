@@ -1,10 +1,16 @@
-const { spawn } = require("child_process");
+import { spawn } from "child_process";
 import * as vscode from "vscode";
+import * as path from 'path';
+import runEditorAction from "./editor";
 
 let recordingProcess: any = null;
-const pythonPath = "/home/ecs_032c/code/Verbalist/venv/bin/python3";
-const filePath = "/home/ecs_032c/code/Verbalist/audio.py";
 export function activate(context: vscode.ExtensionContext) {
+
+  const extensionPath = context.extensionPath;
+  const pythonPath = path.join(extensionPath, 'venv', 'bin', 'python3')
+  const filePath = path.join(extensionPath, 'backend', 'IPC.py');
+
+  console.log(filePath)
   context.subscriptions.push(
     vscode.commands.registerCommand("verbalist.captureAudio", () => {
       const cmd = pythonPath;
@@ -25,7 +31,6 @@ export function activate(context: vscode.ExtensionContext) {
       return recordingProcess;
     })
   );
-
   context.subscriptions.push(
     vscode.commands.registerCommand("verbalist.stopAudio", () => {
       if (recordingProcess) {
@@ -41,7 +46,12 @@ export function activate(context: vscode.ExtensionContext) {
     })
   );
   //   context.subscriptions.push(disposable);
+  context.subscriptions.push(
+    vscode.commands.registerCommand("verbalist.runCommand", () => {
+      runEditorAction("editor.action.deleteLines");
+    })
+  );
 }
 
 // This method is called when your extension is deactivated
-export function deactivate() {}
+export function deactivate() { }

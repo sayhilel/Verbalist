@@ -20,6 +20,10 @@
       {
         "command": "verbalist.stopAudio",
         "title": "Audio Stop"
+      },
+      {
+        "command": "verbalist.runCommand",
+        "title": "Run Command"
       }
     ]
   },

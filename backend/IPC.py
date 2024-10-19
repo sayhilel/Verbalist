@@ -1,10 +1,10 @@
 import sys
-import time
-import sounddevice as sd
-import numpy as np
-import wave
-import 
+import audioRecorder
+import groqCommands
+import os
 
+ofile = os.getcwd() + "/audio.wav"
+recorder = audioRecorder.AudioRecorder(output_filename=ofile)
 
 def listen_for_commands():
     while True:
@@ -18,6 +18,7 @@ def listen_for_commands():
             if not recorder.is_recording:
                 print("Received 'start' command.")
                 recorder.start_recording()
+                # delete file
                 continue
             else:
                 print("Already recording.")
@@ -27,9 +28,9 @@ def listen_for_commands():
             if recorder.is_recording:
                 print("Received 'stop' command.")
                 recorder.stop_recording()
+                print(groqCommands.get_command(ofile))
                 break  # Exit the loop after stopping
             else:
                 print("Not currently recording.")
 
-print("hello from python subprocess!")
 listen_for_commands()
