@@ -1,6 +1,6 @@
 const { spawn } = require("child_process");
 import * as vscode from "vscode";
-
+import runEditorAction from "./editor";
 let recordingProcess: any = null;
 const pythonPath = "/home/ecs_032c/code/Verbalist/venv/bin/python3";
 const filePath = "/home/ecs_032c/code/Verbalist/audio.py";
@@ -41,6 +41,12 @@ export function activate(context: vscode.ExtensionContext) {
     })
   );
   //   context.subscriptions.push(disposable);
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand("verbalist.runCommand", () => {
+      runEditorAction("editor.action.deleteLines");
+    })
+  );
 }
 
 // This method is called when your extension is deactivated
