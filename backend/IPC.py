@@ -2,7 +2,6 @@ import sys
 import audioRecorder
 import groqCommands
 import os
-from groqCommands import eprint
 
 ofile = os.getcwd() + "/audio.wav"
 recorder = audioRecorder.AudioRecorder(output_filename=ofile)
@@ -14,7 +13,7 @@ def listen_for_commands():
         while True:
          # Read a line from stdin and strip any whitespace
             command = sys.stdin.readline().strip()
-            eprint(f"Received command: {command}")
+            #eprint(f"Received command: {command}")
         
             # Respond to the "start" command
             if command == "start":
@@ -25,7 +24,8 @@ def listen_for_commands():
                     # Delete file
                     continue
                 else:
-                    print("Already recording.")
+                    #print("Already recording.")
+                    pass
         
             # Respond to the "stop" command
             if command == "stop":
@@ -35,6 +35,7 @@ def listen_for_commands():
                     print("COMMAND_START")
                     print(groqCommands.get_command(ofile))
                     print("COMMAND_END")
+
     except KeyboardInterrupt:
         print("\nProgram interrupted. Exiting...")
         sys.exit(0)

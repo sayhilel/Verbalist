@@ -1,7 +1,7 @@
 import { spawn } from "child_process";
 import * as vscode from "vscode";
 import * as path from 'path';
-import consoleToCommands from "./parser";
+import runEditorAction from "./editor";
 
 let recordingProcess: any = null;
 export function activate(context: vscode.ExtensionContext) {
@@ -10,6 +10,35 @@ export function activate(context: vscode.ExtensionContext) {
   const pythonPath = path.join(extensionPath, 'venv', 'bin', 'python3')
   const filePath = path.join(extensionPath, 'backend', 'IPC.py');
 
+  //----------------------------------------------
+  // Buffer to accumulate incoming data from stdin
+  let buffer = "";
+
+  // Function to process command output from stdin
+  function processCommandInput() {
+    const commandStart = buffer.indexOf("COMMAND_START");
+    const commandEnd = buffer.indexOf("COMMAND_END");
+
+    if (commandStart !== -1 && commandEnd !== -1) {
+      // Extract command between the delimiters
+      const commandString = buffer
+        .slice(commandStart + "COMMAND_START".length, commandEnd)
+        .trim()
+        .replace("\n", "");
+
+      // Call runEditorAction with the extracted command
+      if (commandString) {
+        runEditorAction(commandString);
+        buffer = "";
+      }
+
+      // Remove the processed command from the buffer
+      buffer = buffer.slice(commandEnd + "COMMAND_END".length);
+
+    }
+  }
+
+  //-----------------------------------------------
   context.subscriptions.push(
     vscode.commands.registerCommand("verbalist.captureAudio", () => {
       const cmd = pythonPath;
@@ -20,9 +49,9 @@ export function activate(context: vscode.ExtensionContext) {
         recordingProcess = spawn(cmd, args);
       }
       recordingProcess.stdout.on("data", (data: any) => {
-        console.log(`${data}`)
-        consoleToCommands(`${data}`)
-
+        console.log(`${data}`);
+        buffer += data;
+        processCommandInput()
       });
       recordingProcess.stderr.on("data", (data: any) => {
         console.log(`STDERR:${data}`);
@@ -42,11 +71,7 @@ export function activate(context: vscode.ExtensionContext) {
         recordingProcess.stdin.write("stop\n");
         recordingProcess.on("exit", () => {
           recordingProcess = null;
-          recordingProcess.stdout.on("data", (data: any) => {
-            console.log(`${data}`)
-            consoleToCommands(`${data}`)
-
-          });
+          console.log("EXITED PROC")
         });
       } else {
         vscode.window.showInformationMessage("no recording process to kill");

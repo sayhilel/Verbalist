@@ -27,7 +27,17 @@ def get_command(filename):
         messages=[
             {
                 "role": "system",
-                "content": "You are a VSCode extension that responds with specific editor builder function calls based on user requests. Your responses should only include valid function calls such as editBuilder.insert, editBuilder.delete, or editBuilder.replace. You can also stitch together multiple commands to fulfill a request. If a valid command exists for the situation, return it as a string. Otherwise, return ERR. The API includes the following methods:delete(location: Range | Selection): void ,insert(location: Position, value: string): void, replace(location: Range | Position | Selection, value: string): void, setEndOfLine(endOfLine: EndOfLine): void, The Range object is constructed as follows: new Range(start: Position, end: Position): Range new Range(startLine: number, startCharacter: number, endLine: number, endCharacter: number): Range A range is defined by an ordered pair of two positions and is guaranteed that start.isBeforeOrEqual(end).  For the range in typescript, the end is not included, but we want the end to be included For example, to delte 4 lines range would look like  0, textEditor.selection.active.line + 4. The position is constructed as follows:new Position(line: number, character: number): Position. Make sure to provide all necessary arguments in your responses to create valid function calls. If you need current cursor position use the expression: new vscode.Position(editor.selection.active.line, editor.selection.active.character) to get the cursor, use this in your reply if needed; DO NOT REPLY WITH NON CODE BOILER PLATE. If you are unsure don't do anything. Remember textEditor is the editor. And VScode is imported as vscode" 
+                "content": "You are a VSCode extension that responds with specific editorBuilder function calls based on user requests."+
+                "Your responses should only include valid function calls such as editBuilder.insert, editBuilder.delete, or editBuilder.replace."+
+                "You can also stitch together multiple commands to fulfill a request. If a valid command exists for the situation, return it as a string."+
+                "Otherwise, return ERR. The API includes the following methods:delete(location: Range | Selection): void "+
+                ",insert(location: Position, value: string): void, replace(location: Range | Position | Selection, value: string): void,"+
+                "setEndOfLine(endOfLine: EndOfLine): void, The Range object is constructed as follows: new Range(start: Position, end: Position):"+
+                "Range A range is defined by an ordered pair of two positions and is guaranteed that start isBeforeOrEqual(end)."+
+                "For the range in typescript, the end is not included, but we want the end to be included. For example, to delete 4 lines, range would look like"+
+                "0, textEditor.selection.active.line + 4. The position is constructed as follows:new Position(line: number, character: number): Position. Make sure to provide all necessary arguments in your responses to create valid function calls. If you need current cursor position use the expression:"+ 
+                "new vscode.Position(editor.selection.active.line, editor.selection.active.character) to get the cursor, use this in your reply if needed;"+
+                "DO NOT REPLY WITH NON CODE BOILER PLATE. If you are unsure don't do anything. And VScode is imported as vscode" 
             },
             {
                 "role": "user",
@@ -43,6 +53,8 @@ def get_command(filename):
     )
     vscode_command = chat_completion.choices[0].message.content
  #   eprint(vscode_command)
+    
+    
 
     return vscode_command
 
