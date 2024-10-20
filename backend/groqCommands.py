@@ -22,7 +22,7 @@ def get_command(filename):
 
     )
     
-    eprint(transcription.text)
+ #   eprint(transcription.text)
     chat_completion = client.chat.completions.create(
         messages=[
             {
@@ -42,7 +42,7 @@ def get_command(filename):
         stream=False,
     )
     vscode_command = chat_completion.choices[0].message.content
-    eprint(vscode_command)
+ #   eprint(vscode_command)
 
     return vscode_command
 
