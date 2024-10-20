@@ -28,6 +28,14 @@
       {
         "command": "verbalist.RUN_COMMAND",
         "title": "RUN COMMAND"
+      },
+      {
+        "command": "verbalist.toggleRecording",
+        "title": "Toggle the recording",
+        "key": "shift+z",    
+        "mac": "shift+z",         
+        "linux": "shift+z",      
+        "win": "shift+z"         
       }
     ]
   },
