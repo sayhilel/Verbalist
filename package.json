@@ -19,21 +19,23 @@
       },
       {
         "command": "verbalist.stopAudio",
-        "title": "Stop Audio Recording"
-      }
-    ],
-    "keybindings": [
-      {
-        "command": "verbalist.captureAudio",
-        "key": "ctrl+alt+r",
-        "mac": "cmd+alt+r",
-        "when": "editorTextFocus"
+        "title": "Audio Stop"
       },
       {
-        "command": "verbalist.stopAudio",
-        "key": "ctrl+alt+s",
-        "mac": "cmd+alt+s",
-        "when": "editorTextFocus"
+        "command": "verbalist.runCommand",
+        "title": "Run Command"
+      },
+      {
+        "command": "verbalist.RUN_COMMAND",
+        "title": "RUN COMMAND"
+      },
+      {
+        "command": "verbalist.toggleRecording",
+        "title": "Toggle the recording",
+        "key": "shift+z",    
+        "mac": "shift+z",         
+        "linux": "shift+z",      
+        "win": "shift+z"         
       }
     ]
   },
