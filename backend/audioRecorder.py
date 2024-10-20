@@ -13,7 +13,8 @@ class AudioRecorder:
 
     def _callback(self, indata, frames, time, status):
         if status:
-            print(status, flush=True)
+            #print(status, flush=True)
+            pass
         if self.is_recording:
             self.frames.append(indata.copy())  # save the audio record
 

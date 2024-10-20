@@ -24,6 +24,10 @@
       {
         "command": "verbalist.runCommand",
         "title": "Run Command"
+      },
+      {
+        "command": "verbalist.RUN_COMMAND",
+        "title": "RUN COMMAND"
       }
     ]
   },

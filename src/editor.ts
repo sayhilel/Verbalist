@@ -15,11 +15,14 @@ export default function runEditorAction(command: string) {
     "(textEditor, edit) => {\n" +
     "textEditor.edit((editBuilder) => {\n" +
     command +
-    "})};";
-  const registerCommandString =
+    "})}";
+  let registerCommandString =
     'vscode.commands.registerTextEditorCommand("verbalist.RUN_COMMAND",' +
     actualCommand +
     ");";
+
+  registerCommandString = registerCommandString.replaceAll("\n", "");
+  console.log(registerCommandString);
   eval(registerCommandString);
   vscode.commands.executeCommand("verbalist.RUN_COMMAND").then(
     () => {
@@ -32,3 +35,4 @@ export default function runEditorAction(command: string) {
     }
   );
 }
+
