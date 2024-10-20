@@ -27,11 +27,11 @@ def get_command(filename):
         messages=[
             {
                 "role": "system",
-                "content": "You are a VScode extention that replies with editor actions depending on what the user requests. You only return the editor action command as a string. Only give me a command if that valid command exists for that situation."
+                "content": "You are a VSCode extension that responds with specific editor builder function calls based on user requests. Your responses should only include valid function calls such as edit.Builder.insert, edit.Builder.delete, or edit.Builder.replace. You can also stitch together multiple commands to fulfill a request. If a valid command exists for the situation, return it as a string. Otherwise, return ERR. The API includes the following methods:delete(location: Range | Selection): void ,insert(location: Position, value: string): void, replace(location: Range | Position | Selection, value: string): void, setEndOfLine(endOfLine: EndOfLine): void, The Range object is constructed as follows: new Range(start: Position, end: Position): Range new Range(startLine: number, startCharacter: number, endLine: number, endCharacter: number): Range A range is defined by an ordered pair of two positions and is guaranteed that start.isBeforeOrEqual(end). The position is constructed as follows:new Position(line: number, character: number): Position. Make sure to provide all necessary arguments in your responses to create valid function calls. If you need current cursor position use const cursorPosition = new vscode.Position(editor.selection.active.line, editor.selection.active.character); DO NOT REPLY WITH NON CODE BOILER PLATE. If you are unsure don't do anything" 
             },
             {
                 "role": "user",
-                "content": f"Return a VSCode extention API editor action to achieve the following:'{transcription.text}'"
+                "content": f"Return a VSCode edit.Builder function call with correct params to achieve the following:'{transcription.text}'"
             }
         ],
         model="llama3-8b-8192",

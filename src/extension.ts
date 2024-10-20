@@ -36,9 +36,8 @@ export function activate(context: vscode.ExtensionContext) {
 
     }
   }
-  //-----------------------------------------------
 
-  //console.log(filePath)
+  //-----------------------------------------------
   context.subscriptions.push(
     vscode.commands.registerCommand("verbalist.captureAudio", () => {
       const cmd = pythonPath;
@@ -63,13 +62,12 @@ export function activate(context: vscode.ExtensionContext) {
       return recordingProcess;
     })
   );
+
   context.subscriptions.push(
     vscode.commands.registerCommand("verbalist.stopAudio", () => {
       if (recordingProcess) {
         vscode.window.showInformationMessage("stopping recording process!");
         recordingProcess.stdin.write("stop\n");
-
-        //recordingProcess.kill("SIGINT");
         recordingProcess.on("exit", () => {
           recordingProcess = null;
         });
@@ -78,11 +76,9 @@ export function activate(context: vscode.ExtensionContext) {
       }
     })
   );
-  //   context.subscriptions.push(disposable);
+
   context.subscriptions.push(
     vscode.commands.registerCommand("verbalist.runCommand", () => {
-      //startListeningForCommands();
-      //vscode.commands.executeCommand("editor.action.deleteLines.action 7")
     })
 
   );
@@ -90,6 +86,4 @@ export function activate(context: vscode.ExtensionContext) {
 
 }
 
-
-// This method is called when your extension is deactivated
 export function deactivate() { }
