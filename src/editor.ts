@@ -10,9 +10,19 @@ export default function runEditorAction(command: string) {
     vscode.window.showInformationMessage("No active editor found.");
     return;
   }
-  console.log("before")
+  console.log("before");
   // Execute the command at the current cursor position
-  vscode.commands.executeCommand(command).then(
+  const actualCommand =
+    "(textEditor, edit) => {\n" +
+    "textEditor.edit((editBuilder) => {\n" +
+    command +
+    "})};";
+  const registerCommandString =
+    'vscode.commands.registerTextEditorCommand("verbalist.RUN_COMMAND",' +
+    actualCommand +
+    ");";
+  eval(registerCommandString);
+  vscode.commands.executeCommand("verbalist.RUN_COMMAND").then(
     () => {
       console.log(`Successfully executed command: ${command}`);
     },
