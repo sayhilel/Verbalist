@@ -45,9 +45,7 @@ export function activate(context: vscode.ExtensionContext) {
       const args = ['-u', filePath];
 
 
-      if (!recordingProcess) {
-        recordingProcess = spawn(cmd, args);
-      }
+      recordingProcess = spawn(cmd, args);
       recordingProcess.stdout.on("data", (data: any) => {
         console.log(`${data}`);
         buffer += data;
