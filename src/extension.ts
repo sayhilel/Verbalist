@@ -77,8 +77,19 @@ export function activate(context: vscode.ExtensionContext) {
   );
 
   context.subscriptions.push(
-    vscode.commands.registerCommand("verbalist.runCommand", () => {})
+    vscode.commands.registerCommand("verbalist.runCommand", () => { })
   );
 }
 
-export function deactivate() {}
+function stopProcess() {
+  if (recordingProcess) {
+    console.log('Stopping Python subprocess...');
+    recordingProcess.kill('SIGTERM');  // Gracefully terminate the process
+    recordingProcess = null;
+    vscode.window.showInformationMessage('Python subprocess stopped.');
+  }
+}
+
+export function deactivate() {
+  stopProcess();
+}
