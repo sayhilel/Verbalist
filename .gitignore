@@ -1,9 +1,6 @@
-<<<<<<< HEAD
 .env
-=======
 .vscode/
 dist/
 node_modules/
 venv/
 .mypy_cache/
->>>>>>> main
