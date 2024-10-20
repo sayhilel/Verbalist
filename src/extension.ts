@@ -43,11 +43,12 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand("verbalist.captureAudio", () => {
       const cmd = pythonPath;
       const args = ['-u', filePath];
+      const options = {
+        cwd: path.join(extensionPath, 'backend'),
+      };
 
 
-      if (!recordingProcess) {
-        recordingProcess = spawn(cmd, args);
-      }
+      recordingProcess = spawn(cmd, args, options);
       recordingProcess.stdout.on("data", (data: any) => {
         console.log(`${data}`);
         buffer += data;
@@ -88,4 +89,5 @@ export function activate(context: vscode.ExtensionContext) {
 
 }
 
-export function deactivate() { }
+export function deactivate() {
+}

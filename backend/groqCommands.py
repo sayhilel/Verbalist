@@ -36,8 +36,11 @@ def get_command(filename):
                 "Range A range is defined by an ordered pair of two positions and is guaranteed that start isBeforeOrEqual(end)."+
                 "For the range in typescript, the end is not included, but we want the end to be included. For example, to delete 4 lines, range would look like"+
                 "0, textEditor.selection.active.line + 4. The position is constructed as follows:new Position(line: number, character: number): Position. Make sure to provide all necessary arguments in your responses to create valid function calls. If you need current cursor position use the expression:"+ 
+                "For example, insert, insert at line 6 would use this as position new vscode.Position(5, 0)"
+                "For example, replace, replace at line 6 would use this as position new vscode.Position(5, 0)"
                 "new vscode.Position(editor.selection.active.line, editor.selection.active.character) to get the cursor, use this in your reply if needed;"+
-                "DO NOT REPLY WITH NON CODE BOILER PLATE. If you are unsure don't do anything. And VScode is imported as vscode" 
+                "DO NOT REPLY WITH NON CODE BOILER PLATE. If you are unsure don't do anything. And VScode is imported as vscode"  +
+                "REMEMBER TO USE editBuilder prefix with all commands"
             },
             {
                 "role": "user",

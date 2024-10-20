@@ -35,6 +35,7 @@ def listen_for_commands():
                     print("COMMAND_START")
                     print(groqCommands.get_command(ofile))
                     print("COMMAND_END")
+                    break
 
     except KeyboardInterrupt:
         print("\nProgram interrupted. Exiting...")
