@@ -85,7 +85,17 @@ export function activate(context: vscode.ExtensionContext) {
     })
 
   );
+  context.subscriptions.push(
+    vscode.commands.registerCommand("verbalist.toggleRecording", () => {
+      if(recordingProcess){
+        vscode.commands.executeCommand("verbalist.stopAudio");
+      }
+      else{
+        vscode.commands.executeCommand("verbalist.captureAudio");
+      }
+    })
 
+  );
 
 }
 
