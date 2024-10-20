@@ -4,31 +4,62 @@ import * as vscode from "vscode";
 export default function runEditorAction(command: string) {
   // Get the active text editor
   const editor = vscode.window.activeTextEditor;
+  // assume command is of type string[] where
+  // each element is a command that needs to be put into the edit builder
   command = command.trim();
 
   if (!editor) {
     vscode.window.showInformationMessage("No active editor found.");
     return;
   }
+
+  const editCommand = "editor.edit((editBuilder) => {\n" + command + "})";
+  console.log("edit command: ", editCommand);
+  eval(editCommand);
+  // editor.edit((editBuilder) => {
+  //   editBuilder.delete(
+  //     new vscode.Range(
+  //       editor.selection.active.line,
+  //       editor.selection.active.character,
+  //       editor.selection.active.line + 2,
+  //       editor.selection.active.character
+  //     )
+  //   );
+  // });
+
+  // editor.edit((editBuilder) => {
+  //   editBuilder.delete(
+  //     new vscode.Range(
+  //       new vscode.Position(editor.selection.active.line, 0),
+  //       new vscode.Position(editor.selection.active.line + 2, 0)
+  //     )
+  //   );
+  // });
+  // 0;
+  console.log("we have passed the eval");
+
   // Execute the command at the current cursor position
-  const actualCommand =
-    "(textEditor, edit) => {\n" +
-    "textEditor.edit((editBuilder) => {\n" +
-    command +
-    "})};";
-  const registerCommandString =
-    'vscode.commands.registerTextEditorCommand("verbalist.RUN_COMMAND",' +
-    actualCommand +
-    ");";
-  eval(registerCommandString);
-  vscode.commands.executeCommand("verbalist.RUN_COMMAND").then(
-    () => {
-      console.log(`Successfully executed command: ${command}`);
-    },
-    (error) => {
-      vscode.window.showErrorMessage(
-        `Failed to execute command: ${command}. Error: ${error}`
-      );
-    }
-  );
+  // const actualCommand =
+  //   "(textEditor, edit) => {\n" +
+  //   "textEditor.edit((editBuilder) => {\n" +
+  //   command +
+  //   "})}";
+  // const registerCommandString =
+  //   'vscode.commands.registerTextEditorCommand("verbalist.RUN_COMMAND",' +
+  //   actualCommand +
+  //   ")";
+  // console.log("The command we are registering is: ");
+  // console.log(registerCommandString);
+  // console.log(eval(registerCommandString));
+  // console.log("we have passed the eval");
+  // vscode.commands.executeCommand("verbalist.RUN_COMMAND").then(
+  //   () => {
+  //     console.log(`Successfully executed command: ${command}`);
+  //   },
+  //   (error) => {
+  //     vscode.window.showErrorMessage(
+  //       `Failed to execute command: ${command}. Error: ${error}`
+  //     );
+  //   }
+  // );
 }
