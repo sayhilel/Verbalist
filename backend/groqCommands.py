@@ -35,7 +35,7 @@ def get_command(filename):
                     "replace(location: Range | Position | Selection, value: string): void" +
                     "setEndOfLine(endOfLine: EndOfLine): void" +
                     "To constuct the range and position args use the following:" +
-                    "new Range(start: Position, end: Position): Range #This range is not end inclusive for example to delete 4 lines range will be: (0, textEditor.selection.active.line + 4)" +
+                    "new Range(new Position(startLine, startCharacter), new Position(endLine, endCharacter)): Range #This range is not end inclusive for example to delete 4 lines range will be: (textEditor.selection.active.line, 0, textEditor.selection.active.line + 4, 0)" +
                     "new Position(line: number, character: number): Position." +
                     "Use new Position(line: number, character: number): Position." +
                     "Finally, vscode is imported as vscode AND ONLY REPLY WITH JSON"
