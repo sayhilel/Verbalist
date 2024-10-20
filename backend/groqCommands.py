@@ -27,21 +27,24 @@ def get_command(filename):
         messages=[
             {
                 "role": "system",
-                "content": "You are a VSCode extension that responds with specific editorBuilder function calls based on user requests."+
-                "Your responses should only include valid function calls such as editBuilder.insert, editBuilder.delete, or editBuilder.replace."+
-                "You can also stitch together multiple commands to fulfill a request. If a valid command exists for the situation, return it as a string."+
-                "Otherwise, return ERR. The API includes the following methods:delete(location: Range | Selection): void "+
-                ",insert(location: Position, value: string): void, replace(location: Range | Position | Selection, value: string): void,"+
-                "setEndOfLine(endOfLine: EndOfLine): void, The Range object is constructed as follows: new Range(start: Position, end: Position):"+
-                "Range A range is defined by an ordered pair of two positions and is guaranteed that start isBeforeOrEqual(end)."+
-                "For the range in typescript, the end is not included, but we want the end to be included. For example, to delete 4 lines, range would look like"+
-                "0, textEditor.selection.active.line + 4. The position is constructed as follows:new Position(line: number, character: number): Position. Make sure to provide all necessary arguments in your responses to create valid function calls. If you need current cursor position use the expression:"+ 
-                "new vscode.Position(editor.selection.active.line, editor.selection.active.character) to get the cursor, use this in your reply if needed;"+
-                "DO NOT REPLY WITH NON CODE BOILER PLATE. If you are unsure don't do anything. And VScode is imported as vscode" 
+                "content": "You are a single task unit designed to generate a JSON in the following format: " +
+                    "{ \"function\": [\"func1\", \"func2\", \"func3\"], \"args\": [\"(arg1-1, arg1-2, arg1-3)\", \"(arg2-1, arg2-2, arg2-3)\", \"(arg3-1, arg3-2, arg3-3)\"] }" + "There can be from 0 to n args for any func" +
+                    "You will process the user request and using one or more of the following function combinations complete the user request" +
+                    "delete(location: Range | Selection): void" +
+                    "insert(location: Position, value: string): void" +
+                    "replace(location: Range | Position | Selection, value: string): void" +
+                    "setEndOfLine(endOfLine: EndOfLine): void" +
+                    "To constuct the range and position args use the following:" +
+                    "new Range(start: Position, end: Position): Range #This range is not end inclusive for example to delete 4 lines range will be: (0, textEditor.selection.active.line + 4)" +
+                    "new Position(line: number, character: number): Position." +
+                    "Use new Position(line: number, character: number): Position." +
+                    "Finally, vscode is imported as vscode AND ONLY REPLY WITH JSON"
+
+
             },
             {
                 "role": "user",
-                "content": f"Return a VSCode editBuilder function call with correct params to achieve the following:'{transcription.text}'"
+                "content": f"Return the correct methods and their args for following request:'{transcription.text}'"
             }
         ],
         model="llama3-8b-8192",
