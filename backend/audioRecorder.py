@@ -3,7 +3,7 @@ import numpy as np
 import wave
 
 class AudioRecorder:
-    def __init__(self, samplerate=44100, channels=1, output_filename="output.wav"):
+    def __init__(self, samplerate=16000, channels=1, output_filename="output.wav"):
         self.samplerate = samplerate
         self.channels = channels
         self.output_filename = output_filename
@@ -19,7 +19,7 @@ class AudioRecorder:
 
     def start_recording(self):
         if not self.is_recording:
-            print("Recording started...")
+            #print("Recording started...")
             self.frames = []  # 清空之前的录音数据
             self.is_recording = True
             self.stream = sd.InputStream(samplerate=self.samplerate, channels=self.channels, callback=self._callback)
@@ -27,7 +27,7 @@ class AudioRecorder:
 
     def stop_recording(self):
         if self.is_recording:
-            print("Stopping recording...")
+            #print("Stopping recording...")
             self.is_recording = False
             if self.stream:
                 self.stream.stop()  # 停止录音
@@ -45,6 +45,6 @@ class AudioRecorder:
             wf.setframerate(self.samplerate)
             wf.writeframes(audio_data.tobytes())
 
-        print(f"Recording saved to {self.output_filename}")
+        #print(f"Recording saved to {self.output_filename}")
 
 

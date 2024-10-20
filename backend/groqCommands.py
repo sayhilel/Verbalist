@@ -10,7 +10,7 @@ def eprint(*args, **kwargs):
     print(*args, file=sys.stderr, **kwargs)
 
 def get_command(filename):
-    client = Groq()
+    client = Groq(api_key=groq_key)
     
     with open(filename, "rb") as file:
         transcription = client.audio.transcriptions.create(
@@ -22,25 +22,27 @@ def get_command(filename):
 
     )
     
-    print(transcription.text)
+    eprint(transcription.text)
     chat_completion = client.chat.completions.create(
         messages=[
             {
                 "role": "system",
-                "content": f"You are a translator from natural language to VScode  vscode.editor API. Only reply with  vscode.editor to achieve the required effect as stated by '{transcription.text}'"
+                "content": "You are a VScode extention that replies with editor actions depending on what the user requests. You only return the editor action command as a string. Only give me a command if that valid command exists for that situation."
             },
             {
                 "role": "user",
-                "content": "```json"
+                "content": f"Return a VSCode extention API editor action to achieve the following:'{transcription.text}'"
             }
         ],
         model="llama3-8b-8192",
-        temperature=0.5,
+        temperature=0.0,
         max_tokens=1024,
-        top_p=1,
+        top_p=0.1,
         stop=None,
         stream=False,
     )
     vscode_command = chat_completion.choices[0].message.content
-    print(vscode_command)  
+    eprint(vscode_command)
+
+    return vscode_command
 
