@@ -1,14 +1,13 @@
 import { spawn } from "child_process";
 import * as vscode from "vscode";
-import * as path from 'path';
+import * as path from "path";
 import runEditorAction from "./editor";
 
 let recordingProcess: any = null;
 export function activate(context: vscode.ExtensionContext) {
-
   const extensionPath = context.extensionPath;
-  const pythonPath = path.join(extensionPath, 'venv', 'bin', 'python3')
-  const filePath = path.join(extensionPath, 'backend', 'IPC.py');
+  const pythonPath = path.join(extensionPath, "venv", "bin", "python3");
+  const filePath = path.join(extensionPath, "backend", "IPC.py");
 
   //----------------------------------------------
   // Buffer to accumulate incoming data from stdin
@@ -28,13 +27,12 @@ export function activate(context: vscode.ExtensionContext) {
 
       // Call runEditorAction with the extracted command
       if (commandString) {
-        runEditorAction(commandString);
+        runEditorAction(commandString, context);
         buffer = "";
       }
 
       // Remove the processed command from the buffer
       buffer = buffer.slice(commandEnd + "COMMAND_END".length);
-
     }
   }
 
@@ -42,8 +40,7 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.commands.registerCommand("verbalist.captureAudio", () => {
       const cmd = pythonPath;
-      const args = ['-u', filePath];
-
+      const args = ["-u", filePath];
 
       if (!recordingProcess) {
         recordingProcess = spawn(cmd, args);
@@ -51,7 +48,7 @@ export function activate(context: vscode.ExtensionContext) {
       recordingProcess.stdout.on("data", (data: any) => {
         console.log(`${data}`);
         buffer += data;
-        processCommandInput()
+        processCommandInput();
       });
       recordingProcess.stderr.on("data", (data: any) => {
         console.log(`STDERR:${data}`);
@@ -71,7 +68,7 @@ export function activate(context: vscode.ExtensionContext) {
         recordingProcess.stdin.write("stop\n");
         recordingProcess.on("exit", () => {
           recordingProcess = null;
-          console.log("EXITED PROC")
+          console.log("EXITED PROC");
         });
       } else {
         vscode.window.showInformationMessage("no recording process to kill");
@@ -80,12 +77,8 @@ export function activate(context: vscode.ExtensionContext) {
   );
 
   context.subscriptions.push(
-    vscode.commands.registerCommand("verbalist.runCommand", () => {
-    })
-
+    vscode.commands.registerCommand("verbalist.runCommand", () => {})
   );
-
-
 }
 
-export function deactivate() { }
+export function deactivate() {}
