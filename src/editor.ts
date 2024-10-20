@@ -1,7 +1,10 @@
 import * as vscode from "vscode";
+import Doggy from "./doggy"; // Import Doggy class
 
-//function to run vs code commands
-export default function runEditorAction(command: string) {
+export default function runEditorAction(
+  command: string,
+  context: vscode.ExtensionContext
+) {
   // Get the active text editor
   const editor = vscode.window.activeTextEditor;
 
@@ -10,8 +13,20 @@ export default function runEditorAction(command: string) {
     return;
   }
 
-  const editCommandString =
-    "editor.edit((editBuilder) => {\n" + command + "});";
-  eval(editCommandString);
-  console.log("passed eval");
+  const doggy = new Doggy(context.extensionUri); // Pass extensionUri to Doggy
+
+  // Show the dog character with the action
+  doggy.showDog(`Executing command: ${command}`);
+
+  try {
+    const editCommandString =
+      "editor.edit((editBuilder) => {\n" + command + "});";
+    eval(editCommandString);
+    console.log("passed eval");
+  } catch (error) {
+    vscode.window.showErrorMessage(`Error executing command: ${error}`);
+  } finally {
+    // Hide the dog character after the action is executed
+    doggy.hide();
+  }
 }
